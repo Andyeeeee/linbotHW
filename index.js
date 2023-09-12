@@ -13,30 +13,17 @@ const bot = linebot({
 bot.on('message', async event => {
   if (event.message.type === 'text') {
     try {
-      const { data } = await axios.get('https://themedata.culture.tw/opendata/object/Point.json?origin=tour.cksmh.gov.tw&lang=zh-tw&branch=home')
-
-      for (const n1 of data.data) {
-        if (n1.name === event.message.text) {
-
+      const { data } = await axios.get('https://data.moa.gov.tw/Service/OpenData/FaRss/FaRSS170.aspx?IsTransData=1&UnitId=H53')
+      for (const info of data) {
+        console.log(info);
+        if (info.field005 === event.message.text) {
           event.reply([
-            n1.content,
-            n1.link,
-            {
-              type: 'image',
-              originalContentUrl: 'https://images.goodsmile.info/cgm/images/product/20221028/13471/106542/large/b68d75a06227910b9107c57ab0fa98cc.jpg',
-              previewImageUrl: 'https://images.goodsmile.info/cgm/images/product/20221028/13471/106542/large/b68d75a06227910b9107c57ab0fa98cc.jpg',
-            }
+            info.field001,
+            info.field002,
+            info.field003,
+            info.field004,
+
           ])
-          // event.reply([
-          //   info.Description,
-          //   {
-          //     type: 'location',
-          //     title: info.Name,
-          //     address: info.Add,
-          //     latitude: info.Py,
-          //     longitude: info.Px
-          //   }
-          // ])
           return
         }
       }
